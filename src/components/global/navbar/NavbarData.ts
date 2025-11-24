@@ -4,6 +4,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "#hero" },
   { 
     label: "About", 
+    href: "/about",
     subItems: [
       { label: "Facilities", href: "#facilities" },
       { label: "Campus Life", href: "#student-life" },

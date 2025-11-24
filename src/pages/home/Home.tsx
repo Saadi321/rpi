@@ -1,4 +1,7 @@
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { PageLoader } from '@/components/common/PageLoader';
+import { PageSkeleton } from '@/components/common/Skeletons';
 import {
   Hero,
   Intro,
@@ -31,6 +34,34 @@ const CallToAction = () => (
 );
 
 export const Home = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    // Simulate initial load
+    const loaderTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    // Show content after skeleton
+    const contentTimer = setTimeout(() => {
+      setShowContent(true);
+    }, 2000);
+
+    return () => {
+      clearTimeout(loaderTimer);
+      clearTimeout(contentTimer);
+    };
+  }, []);
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
+  if (!showContent) {
+    return <PageSkeleton />;
+  }
+
   return (
     <main className="min-h-screen font-sans text-slate-900 bg-white selection:bg-secondary selection:text-white">
       <Hero />
