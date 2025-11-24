@@ -1,0 +1,16 @@
+// Global Components
+export { Navbar } from './global/navbar/Navbar';
+export { Footer } from './global/footer/Footer';
+
+// Dynamic Components
+export { Hero } from './dynamic/hero/Hero';
+export { Intro } from './dynamic/intro/Intro';
+export { Programs } from './dynamic/programs/Programs';
+export { Admissions } from './dynamic/admissions/Admissions';
+export { Facilities } from './dynamic/facilities/Facilities';
+export { StudentLife } from './dynamic/studentLife/StudentLife';
+export { IndustryLinks } from './dynamic/industryLinks/IndustryLinks';
+export { Testimonials } from './dynamic/testimonials/Testimonials';
+export { Gallery } from './dynamic/gallery/Gallery';
+export { Announcements } from './dynamic/announcements/Announcements';
+export { Contact } from './dynamic/contact/Contact';
