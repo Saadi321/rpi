@@ -37,7 +37,7 @@ export const Hero = () => {
               <Button size="lg" className="gap-2 bg-secondary hover:bg-secondary/90 text-white border-0">
                 Apply Now <ArrowRight className="w-4 h-4" />
               </Button>
-              <Button size="lg" variant="outline" className="gap-2 text-white border-white hover:bg-white hover:text-slate-900">
+              <Button size="lg" variant="outline" className="gap-2 bg-transparent text-white border-white hover:bg-white hover:text-slate-900">
                 Download Prospectus <FileText className="w-4 h-4" />
               </Button>
             </div>
