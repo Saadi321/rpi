@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, GraduationCap } from 'lucide-react';
+import { Menu, X, GraduationCap, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { NAV_ITEMS } from './NavbarData';
@@ -7,6 +7,7 @@ import { NAV_ITEMS } from './NavbarData';
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,13 +39,44 @@ export const Navbar = () => {
 
           <div className="hidden lg:flex items-center gap-8">
             {NAV_ITEMS.map((item) => (
-              <a 
-                key={item.label} 
-                href={item.href}
-                className="text-sm font-medium text-slate-600 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-secondary after:left-0 after:-bottom-1 after:transition-all hover:after:w-full"
+              <div
+                key={item.label}
+                className="relative"
+                onMouseEnter={() => item.subItems && setOpenDropdown(item.label)}
+                onMouseLeave={() => setOpenDropdown(null)}
               >
-                {item.label}
-              </a>
+                {item.subItems ? (
+                  <>
+                    <button
+                      className="text-sm font-medium text-slate-600 hover:text-primary transition-colors flex items-center gap-1 relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-secondary after:left-0 after:-bottom-1 after:transition-all hover:after:w-full"
+                    >
+                      {item.label}
+                      <ChevronDown className="w-3 h-3" />
+                    </button>
+                    
+                    {openDropdown === item.label && (
+                      <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-100 py-2 z-[100]">
+                        {item.subItems.map((subItem) => (
+                          <a
+                            key={subItem.label}
+                            href={subItem.href}
+                            className="block px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors"
+                          >
+                            {subItem.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <a 
+                    href={item.href}
+                    className="text-sm font-medium text-slate-600 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-secondary after:left-0 after:-bottom-1 after:transition-all hover:after:w-full"
+                  >
+                    {item.label}
+                  </a>
+                )}
+              </div>
             ))}
             <Button size="sm" className="bg-secondary hover:bg-secondary/90">Apply Now</Button>
           </div>
@@ -69,14 +101,41 @@ export const Navbar = () => {
           >
             <div className="container mx-auto px-4 py-6 flex flex-col gap-4">
               {NAV_ITEMS.map((item) => (
-                <a 
-                  key={item.label} 
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="text-base font-medium text-slate-600 hover:text-primary py-2 border-b border-slate-50 last:border-0"
-                >
-                  {item.label}
-                </a>
+                <div key={item.label}>
+                  {item.subItems ? (
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
+                        className="text-base font-medium text-slate-600 hover:text-primary py-2 border-b border-slate-50 w-full text-left flex items-center justify-between"
+                      >
+                        {item.label}
+                        <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
+                      </button>
+                      {openDropdown === item.label && (
+                        <div className="pl-4 space-y-2">
+                          {item.subItems.map((subItem) => (
+                            <a
+                              key={subItem.label}
+                              href={subItem.href}
+                              onClick={() => setIsOpen(false)}
+                              className="block text-sm text-slate-500 hover:text-primary py-1"
+                            >
+                              {subItem.label}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <a 
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className="text-base font-medium text-slate-600 hover:text-primary py-2 border-b border-slate-50 last:border-0 block"
+                    >
+                      {item.label}
+                    </a>
+                  )}
+                </div>
               ))}
               <Button className="w-full mt-2" onClick={() => setIsOpen(false)}>
                 Apply Online
