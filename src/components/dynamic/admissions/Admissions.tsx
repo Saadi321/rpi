@@ -33,7 +33,7 @@ export const Admissions = () => {
                   <div className="w-16 h-16 rounded-2xl bg-slate-50 text-slate-600 flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:text-white group-hover:scale-110 transition-all duration-300">
                     <step.icon className="w-8 h-8" />
                   </div>
-                  
+
                   <h3 className="text-lg font-bold text-slate-900 mb-3">{step.title}</h3>
                   <p className="text-slate-500 text-sm leading-relaxed">{step.desc}</p>
                 </CardContent>
@@ -44,10 +44,10 @@ export const Admissions = () => {
 
         <div className="mt-16 flex flex-col items-center justify-center">
           <Button size="lg" className="font-bold px-8 py-6 text-lg shadow-xl shadow-secondary/20 hover:shadow-secondary/40 bg-secondary hover:bg-secondary/90">
-            Apply for Admission 2024 <ArrowRight className="ml-2 w-5 h-5" />
+            Apply for Admission 2025-2026 <ArrowRight className="ml-2 w-5 h-5" />
           </Button>
           <p className="mt-4 text-sm text-slate-500 font-medium">
-            Need help? Contact our admission office at <span className="text-secondary">051-1234567</span>
+            Need help? Contact our admission office at <span className="text-secondary">+92-51-5505677</span>
           </p>
         </div>
       </div>
