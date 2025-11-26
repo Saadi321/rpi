@@ -2,6 +2,11 @@
 export { Navbar } from './global/navbar/Navbar';
 export { Footer } from './global/footer/Footer';
 
+//Common Components
+export { CallToAction } from './common/CallToAction';
+export { PageLoader } from './common/PageLoader';
+export { PageSkeleton } from './common/Skeletons';
+
 // Dynamic Components
 export { Hero } from './dynamic/hero/Hero';
 export { Intro } from './dynamic/intro/Intro';
