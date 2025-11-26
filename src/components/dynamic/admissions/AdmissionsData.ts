@@ -1,4 +1,4 @@
-import { FileSpreadsheet, Upload, Users, GraduationCap } from 'lucide-react';
+import { FileSpreadsheet, Upload, Wallet, GraduationCap } from 'lucide-react';
 import { AdmissionStep } from './AdmissionsTypes';
 
 export const ADMISSION_STEPS: AdmissionStep[] = [
@@ -15,9 +15,9 @@ export const ADMISSION_STEPS: AdmissionStep[] = [
     step: "02"
   },
   {
-    title: "Merit & Interview",
-    desc: "Check the merit list on the website and appear for a short interview.",
-    icon: Users,
+    title: "Deposit Fee",
+    desc: "Pay the required admission deposit to secure your seat for the program.",
+    icon: Wallet,
     step: "03"
   },
   {
