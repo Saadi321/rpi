@@ -22,7 +22,7 @@ export const ADMISSION_STEPS: AdmissionStep[] = [
   },
   {
     title: "Start Classes",
-    desc: "Pay the admission fee, collect your ID card, and begin your journey.",
+    desc: "Collect your ID card, and Let's start your Studies.",
     icon: GraduationCap,
     step: "04"
   }
