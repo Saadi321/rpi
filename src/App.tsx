@@ -4,8 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navbar, Footer, PageLoader, PageSkeleton } from "@/components";
-import { Home, About, Curriculum } from "@/pages";
-import NotFound from "./pages/NotFound";
+import { Home, About, Curriculum, Admission, NotFound } from "@/pages";
 import { useState, useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -46,12 +45,13 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/curriculum" element={<Curriculum />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/curriculum" element={<Curriculum />} />
+          <Route path="/admission" element={<Admission />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
           <Footer />
         </BrowserRouter>
       </TooltipProvider>
