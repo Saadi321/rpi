@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PROGRAMS, PROGRAM_COLORS } from './ProgramsData';
+import { Link } from 'react-router-dom';
 
 export const Programs = () => {
   return (
@@ -47,9 +48,13 @@ export const Programs = () => {
                       </li>
                     ))}
                   </ul>
-                  <Button variant="ghost" className="w-full justify-between group-hover:text-primary group-hover:bg-slate-50">
-                    View Curriculum <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
+                  <Link
+                    to="/curriculum"
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-md hover:bg-slate-50 hover:text-primary transition"
+                  >
+                    View Curriculum
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
                 </CardContent>
               </Card>
             </motion.div>
