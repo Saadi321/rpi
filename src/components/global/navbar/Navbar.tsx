@@ -113,15 +113,24 @@ export const Navbar = () => {
                 )}
               </div>
             ))}
+
+            {/* APPLY NOW BUTTON (updated with redirect) */}
             <button
-              onClick={() => navigate('/announcements')}
+              onClick={() => navigate('/admission')}
               className="p-2 rounded-full hover:bg-slate-100 text-slate-600 hover:text-primary transition-colors relative group"
               aria-label="Announcements"
             >
               <Bell className="w-5 h-5" />
               <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
             </button>
-            <Button size="sm" className="bg-secondary hover:bg-secondary/90">Apply Now</Button>
+
+            <Button
+              size="sm"
+              className="bg-secondary hover:bg-secondary/90"
+              onClick={() => navigate('/admission')}
+            >
+              Apply Now
+            </Button>
           </div>
 
           <button
@@ -159,7 +168,10 @@ export const Navbar = () => {
                         className="text-base font-medium text-slate-600 hover:text-primary py-2 border-b border-slate-50 w-full text-left flex items-center justify-between"
                       >
                         {item.label}
-                        <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform ${openDropdown === item.label ? 'rotate-180' : ''
+                            }`}
+                        />
                       </button>
                       {openDropdown === item.label && (
                         <div className="pl-4 space-y-2">
@@ -191,7 +203,15 @@ export const Navbar = () => {
                   )}
                 </div>
               ))}
-              <Button className="w-full mt-2" onClick={() => setIsOpen(false)}>
+
+              {/* MOBILE APPLY ONLINE BUTTON (updated with redirect) */}
+              <Button
+                className="w-full mt-2"
+                onClick={() => {
+                  navigate('/admission');
+                  setIsOpen(false);
+                }}
+              >
                 Apply Online
               </Button>
             </div>
