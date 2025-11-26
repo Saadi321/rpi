@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, FileText, CheckCircle2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+
 import { Badge } from '@/components/ui/badge';
 import { HeroImg } from "@/assets"
+import { Link } from 'react-router-dom';
 export const Hero = () => {
   return (
     <section id="hero" className="relative min-h-screen flex items-center pt-16 overflow-hidden">
@@ -34,12 +35,19 @@ export const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="gap-2 bg-secondary hover:bg-secondary/90 text-white border-0">
+              <Link
+                to="/admission"
+                className="gap-2 bg-secondary hover:bg-secondary/90 text-white border-0 px-6 py-2 rounded-lg flex items-center justify-center text-lg font-medium"
+              >
                 Apply Now <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button size="lg" variant="outline" className="gap-2 bg-transparent text-white border-white hover:bg-white hover:text-slate-900">
+              </Link>
+
+              <Link
+                to="/prospectus"
+                className="gap-2 bg-transparent text-white border border-white hover:bg-white hover:text-slate-900 px-6 py-2 rounded-lg flex items-center justify-center text-lg font-medium"
+              >
                 Download Prospectus <FileText className="w-4 h-4" />
-              </Button>
+              </Link>
             </div>
 
             <div className="pt-8 border-t border-white/10 flex items-center gap-6 text-sm text-slate-300">

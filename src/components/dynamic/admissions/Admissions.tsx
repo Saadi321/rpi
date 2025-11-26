@@ -2,6 +2,7 @@ import { ArrowRight } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ADMISSION_STEPS } from './AdmissionsData';
+import { Link } from 'react-router-dom';
 
 export const Admissions = () => {
   return (
@@ -43,9 +44,13 @@ export const Admissions = () => {
         </div>
 
         <div className="mt-16 flex flex-col items-center justify-center">
-          <Button size="lg" className="font-bold px-8 py-6 text-lg shadow-xl shadow-secondary/20 hover:shadow-secondary/40 bg-secondary hover:bg-secondary/90">
-            Apply for Admission 2025-2026 <ArrowRight className="ml-2 w-5 h-5" />
-          </Button>
+          <Link
+            to="/admission"
+            className="font-bold px-8 py-3 text-lg shadow-xl shadow-secondary/20 hover:shadow-secondary/40 bg-secondary hover:bg-secondary/90 flex items-center rounded-lg text-white"
+          >
+            Apply for Admission 2025-2026
+            <ArrowRight className="ml-2 w-5 h-5" />
+          </Link>
           <p className="mt-4 text-sm text-slate-500 font-medium">
             Need help? Contact our admission office at <span className="text-secondary">+92-51-5505677</span>
           </p>
