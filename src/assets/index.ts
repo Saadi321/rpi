@@ -1,2 +1,2 @@
-import HeroImg from "./HeroImg.png";
+import HeroImg from "./images/HeroImg.png";
 export { HeroImg }
