@@ -1,8 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, FileText, CheckCircle2 } from 'lucide-react';
-
 import { Badge } from '@/components/ui/badge';
-import { HeroImg } from "@/assets"
+import { HeroImg } from "@/assets";
 import { Link } from 'react-router-dom';
 export const Hero = () => {
   return (
