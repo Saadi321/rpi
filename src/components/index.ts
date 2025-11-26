@@ -13,6 +13,7 @@ export { Intro } from './dynamic/intro/Intro';
 export { Programs } from './dynamic/programs/Programs';
 export { Admissions } from './dynamic/admissions/Admissions';
 export { AdmissionForm } from './dynamic/admissions/AdmissionForm';
+export { Curriculum } from './dynamic/curriculum/Curriculum';
 export { Facilities } from './dynamic/facilities/Facilities';
 export { StudentLife } from './dynamic/studentLife/StudentLife';
 export { IndustryLinks } from './dynamic/industryLinks/IndustryLinks';

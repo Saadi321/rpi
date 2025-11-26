@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, GraduationCap, ChevronDown } from 'lucide-react';
+import { Menu, X, GraduationCap, ChevronDown, Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -22,7 +22,7 @@ export const Navbar = () => {
         setOpenDropdown(null);
       }
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -40,7 +40,7 @@ export const Navbar = () => {
 
   const handleNavClick = (href?: string) => {
     if (!href) return;
-    
+
     if (href.startsWith('#')) {
       const element = document.querySelector(href);
       if (element) {
@@ -52,10 +52,9 @@ export const Navbar = () => {
   };
 
   return (
-    <nav 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md py-2' : 'bg-white/90 backdrop-blur-sm py-4'
-      }`}
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md py-2' : 'bg-white/90 backdrop-blur-sm py-4'
+        }`}
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
@@ -86,7 +85,7 @@ export const Navbar = () => {
                       {item.label}
                       <ChevronDown className="w-3 h-3" />
                     </button>
-                    
+
                     {openDropdown === item.label && (
                       <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-100 py-2 z-[100]">
                         {item.subItems.map((subItem) => (
@@ -105,7 +104,7 @@ export const Navbar = () => {
                     )}
                   </>
                 ) : (
-                  <button 
+                  <button
                     onClick={() => handleNavClick(item.href)}
                     className="text-sm font-medium text-slate-600 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-secondary after:left-0 after:-bottom-1 after:transition-all hover:after:w-full"
                   >
@@ -114,10 +113,18 @@ export const Navbar = () => {
                 )}
               </div>
             ))}
+            <button
+              onClick={() => navigate('/announcements')}
+              className="p-2 rounded-full hover:bg-slate-100 text-slate-600 hover:text-primary transition-colors relative group"
+              aria-label="Announcements"
+            >
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+            </button>
             <Button size="sm" className="bg-secondary hover:bg-secondary/90">Apply Now</Button>
           </div>
 
-          <button 
+          <button
             className="lg:hidden p-2 text-slate-600 hover:text-primary"
             onClick={toggleMenu}
             aria-label="Toggle menu"
@@ -172,7 +179,7 @@ export const Navbar = () => {
                       )}
                     </div>
                   ) : (
-                    <button 
+                    <button
                       onClick={() => {
                         handleNavClick(item.href);
                         setIsOpen(false);

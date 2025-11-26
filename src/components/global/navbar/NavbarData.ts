@@ -1,4 +1,4 @@
-import { NavItem } from './NavbarTypes';
+import { NavItem } from "./NavbarTypes";
 
 export const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "/" },
@@ -9,9 +9,11 @@ export const NAV_ITEMS: NavItem[] = [
       { label: "Facilities", href: "/facilities" },
       { label: "Campus Life", href: "/student-life" },
       { label: "Programs", href: "/programs" },
-    ]
+      { label: "Faculty", href: "/faculty" },
+      { label: "Gallery", href: "/gallery" },
+    ],
   },
-  { label: "Admissions", href: "/admissions" },
-  { label: "Announcements", href: "/announcements" },
+
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
