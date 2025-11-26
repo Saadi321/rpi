@@ -8,12 +8,11 @@ export const NAV_ITEMS: NavItem[] = [
     subItems: [
       { label: "Facilities", href: "/facilities" },
       { label: "Campus Life", href: "/student-life" },
-      { label: "Programs", href: "/programs" },
       { label: "Faculty", href: "/faculty" },
       { label: "Gallery", href: "/gallery" },
     ],
   },
-
+  { label: "Programs", href: "/programs" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
