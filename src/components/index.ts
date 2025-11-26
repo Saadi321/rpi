@@ -9,7 +9,7 @@ export { PageSkeleton } from './common/Skeletons';
 
 // Dynamic Components
 export { Hero } from './dynamic/hero/Hero';
-export { Intro } from './dynamic/intro/Intro';
+export { ChooseUs } from './dynamic/chooseUs/ChooseUs';
 export { Programs } from './dynamic/programs/Programs';
 export { Admissions } from './dynamic/admissions/Admissions';
 export { AdmissionForm } from './dynamic/admissions/AdmissionForm';

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
   Hero,
-  Intro,
+  ChooseUs,
   Programs,
   Admissions,
   Facilities,
@@ -18,7 +18,7 @@ export const Home = () => {
   return (
     <main className="min-h-screen font-sans text-slate-900 bg-white selection:bg-secondary selection:text-white">
       <Hero />
-      <Intro />
+      <ChooseUs />
       <Programs />
       <Admissions />
       <Facilities />

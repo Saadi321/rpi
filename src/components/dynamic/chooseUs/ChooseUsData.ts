@@ -1,5 +1,6 @@
 import { Users, BookOpen, Trophy, Briefcase } from 'lucide-react';
-import { Stat } from './IntroTypes';
+import { Stat } from './ChooseUsTypes';
+
 
 export const STATS: Stat[] = [
   { label: "Graduates", value: "10,000+", icon: Users },

@@ -42,18 +42,20 @@ interface FormData {
   cnic: string;
   dob: string;
   religion: string;
+  studentPhone: string;
+  studentPhoneCode: string;
 
   // Step 2: Father/Guardian Details
   guardianCnic: string;
   guardianProfession: string;
   permanentAddress: string;
-  permanentDistrict: string;
   presentAddress: string;
-  presentDistrict: string;
   officePhone: string;
+  officePhoneCode: string;
   residencePhone: string;
+  residencePhoneCode: string;
   whatsappNumber: string;
-  studentPhone: string;
+  whatsappPhoneCode: string;
 
   // Step 3: Academic Record
   matricRollNo: string;
@@ -77,6 +79,11 @@ interface FormData {
   interTotalMarks: string;
   interCollegeName: string;
   interBoardName: string;
+  interRegistrationNumber: string;
+  interSubEnglish: number | '';
+  interSubMath: number | '';
+  interSubPhysics: number | '';
+  interSubChemistry: number | '';
 
   // Step 4: Program Selection
   pref1: string;
@@ -96,16 +103,21 @@ const INITIAL_DATA: FormData = {
   studentName: '', studentPicture: null, studentPicturePreview: null,
   fatherName: '', isFatherAlive: 'Alive', guardianType: 'Father', guardianName: '', guardianRelation: '',
   cnic: '', dob: '', religion: 'Islam',
+  studentPhone: '', studentPhoneCode: '+92',
 
-  guardianCnic: '', guardianProfession: '', permanentAddress: '', permanentDistrict: '',
-  presentAddress: '', presentDistrict: '', officePhone: '', residencePhone: '',
-  whatsappNumber: '', studentPhone: '',
+  guardianCnic: '', guardianProfession: '', permanentAddress: '',
+  presentAddress: '',
+  officePhone: '', officePhoneCode: '+92',
+  residencePhone: '', residencePhoneCode: '+92',
+  whatsappNumber: '', whatsappPhoneCode: '+92',
 
   matricRollNo: '', matricYear: '', matricGrade: '', matricMarksObtained: '',
   matricTotalMarks: '1100', schoolName: '', boardName: '', registrationNumber: '',
   subEnglish: '', subMath: '', subPhysics: '', subChemistry: '',
 
-  interRollNo: '', interYear: '', interGrade: '', interMarksObtained: '', interTotalMarks: '', interCollegeName: '', interBoardName: '',
+  interRollNo: '', interYear: '', interGrade: '', interMarksObtained: '', interTotalMarks: '1100',
+  interCollegeName: '', interBoardName: '', interRegistrationNumber: '',
+  interSubEnglish: '', interSubMath: '', interSubPhysics: '', interSubChemistry: '',
 
   pref1: '', pref2: '', pref3: '',
 
@@ -127,6 +139,85 @@ const STEPS = [
   { id: 4, title: "Program Selection", icon: Layers },
   { id: 5, title: "Undertaking", icon: FileSignature },
 ];
+
+// --- Helper Components (moved outside to prevent focus loss) ---
+const FormInput = ({ id, label, error, ...props }: any) => (
+  <div className="space-y-2">
+    <Label htmlFor={id}>{label}</Label>
+    <Input id={id} {...props} className={error ? 'border-red-300' : ''} />
+    {error && <p className="text-sm text-red-600">{error}</p>}
+  </div>
+);
+
+const FormSelect = ({ id, label, options, value, onChange, error }: any) => (
+  <div className="space-y-2">
+    <Label htmlFor={id}>{label}</Label>
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className={error ? 'border-red-300' : ''}>
+        <SelectValue placeholder="Select..." />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((opt: any) => (
+          <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+    {error && <p className="text-sm text-red-600">{error}</p>}
+  </div>
+);
+
+const PhoneInput = ({ id, label, value, codeValue, onChangeNumber, onChangeCode, error }: any) => {
+  const countryCodes = [
+    { code: '+92', label: 'PK +92' },
+    { code: '+91', label: 'IN +91' },
+    { code: '+1', label: 'US +1' },
+    { code: '+44', label: 'UK +44' },
+    { code: '+971', label: 'UAE +971' },
+  ];
+
+  return (
+    <div className="space-y-2">
+      <Label htmlFor={id}>{label}</Label>
+      <div className="flex gap-2">
+        <Select value={codeValue} onValueChange={onChangeCode}>
+          <SelectTrigger className="w-[110px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {countryCodes.map((country) => (
+              <SelectItem key={country.code} value={country.code}>
+                {country.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Input
+          id={id}
+          type="tel"
+          placeholder="3001234567"
+          value={value}
+          onChange={onChangeNumber}
+          className={`flex-1 ${error ? 'border-red-300' : ''}`}
+          maxLength={11}
+        />
+      </div>
+      {error && <p className="text-sm text-red-600">{error}</p>}
+    </div>
+  );
+};
+
+const FormRadioGroup = ({ name, options, value, onChange }: any) => (
+  <RadioGroup value={value} onValueChange={onChange}>
+    <div className="flex gap-4">
+      {options.map((opt: any) => (
+        <div key={opt.value} className="flex items-center space-x-2">
+          <RadioGroupItem value={opt.value} id={`${name}-${opt.value}`} />
+          <Label htmlFor={`${name}-${opt.value}`} className="cursor-pointer">{opt.label}</Label>
+        </div>
+      ))}
+    </div>
+  </RadioGroup>
+);
 
 interface AdmissionFormProps {
   onBack: () => void;
@@ -204,6 +295,11 @@ export const AdmissionForm: React.FC<AdmissionFormProps> = ({ onBack }) => {
       if (!formData.dob) newErrors.dob = "Date of Birth is required";
       if (formData.guardianType === 'Other' && !formData.guardianName) newErrors.guardianName = "Guardian Name is required";
       if (formData.guardianType === 'Other' && !formData.guardianRelation) newErrors.guardianRelation = "Relation is required";
+
+      // Student phone validation
+      if (formData.studentPhone && (formData.studentPhone.length < 10 || formData.studentPhone.length > 11)) {
+        newErrors.studentPhone = "Phone must be 10-11 digits";
+      }
     }
 
     if (currentStep === 2) {
@@ -212,6 +308,17 @@ export const AdmissionForm: React.FC<AdmissionFormProps> = ({ onBack }) => {
       if (!formData.permanentAddress) newErrors.permanentAddress = "Permanent Address is required";
       if (!formData.presentAddress) newErrors.presentAddress = "Present Address is required";
       if (!formData.whatsappNumber) newErrors.whatsappNumber = "WhatsApp Number is required";
+
+      // Phone validation
+      if (formData.whatsappNumber && (formData.whatsappNumber.length < 10 || formData.whatsappNumber.length > 11)) {
+        newErrors.whatsappNumber = "Phone must be 10-11 digits";
+      }
+      if (formData.officePhone && (formData.officePhone.length < 10 || formData.officePhone.length > 11)) {
+        newErrors.officePhone = "Phone must be 10-11 digits";
+      }
+      if (formData.residencePhone && (formData.residencePhone.length < 10 || formData.residencePhone.length > 11)) {
+        newErrors.residencePhone = "Phone must be 10-11 digits";
+      }
     }
 
     if (currentStep === 3) {
@@ -287,45 +394,6 @@ export const AdmissionForm: React.FC<AdmissionFormProps> = ({ onBack }) => {
     }
   };
 
-  // --- Helper Component for Input with Error ---
-  const FormInput = ({ id, label, error, ...props }: any) => (
-    <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
-      <Input id={id} {...props} className={error ? 'border-red-300' : ''} />
-      {error && <p className="text-sm text-red-600">{error}</p>}
-    </div>
-  );
-
-  const FormSelect = ({ id, label, options, value, onChange, error }: any) => (
-    <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
-      <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className={error ? 'border-red-300' : ''}>
-          <SelectValue placeholder="Select..." />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map((opt: any) => (
-            <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      {error && <p className="text-sm text-red-600">{error}</p>}
-    </div>
-  );
-
-  const FormRadioGroup = ({ name, options, value, onChange }: any) => (
-    <RadioGroup value={value} onValueChange={onChange}>
-      <div className="flex gap-4">
-        {options.map((opt: any) => (
-          <div key={opt.value} className="flex items-center space-x-2">
-            <RadioGroupItem value={opt.value} id={`${name}-${opt.value}`} />
-            <Label htmlFor={`${name}-${opt.value}`} className="cursor-pointer">{opt.label}</Label>
-          </div>
-        ))}
-      </div>
-    </RadioGroup>
-  );
-
   // --- Render Steps ---
 
   const renderStep1 = () => (
@@ -376,6 +444,16 @@ export const AdmissionForm: React.FC<AdmissionFormProps> = ({ onBack }) => {
             <FormInput id="dob" type="date" label="Date of Birth" value={formData.dob} onChange={(e: any) => updateField('dob', e.target.value)} error={errors.dob} />
             <FormInput id="religion" label="Religion" value={formData.religion} onChange={(e: any) => updateField('religion', e.target.value)} />
           </div>
+
+          <PhoneInput
+            id="studentPhone"
+            label="Student Personal Phone Number"
+            value={formData.studentPhone}
+            codeValue={formData.studentPhoneCode}
+            onChangeNumber={(e: any) => updateField('studentPhone', e.target.value.replace(/\D/g, ''))}
+            onChangeCode={(v: string) => updateField('studentPhoneCode', v)}
+            error={errors.studentPhone}
+          />
         </div>
 
         <div className="md:col-span-4">
@@ -406,17 +484,38 @@ export const AdmissionForm: React.FC<AdmissionFormProps> = ({ onBack }) => {
         <div className="space-y-4">
           <h3 className="font-semibold text-slate-900 border-b pb-2">Postal Addresses</h3>
           <FormInput id="permanentAddress" label="Permanent Address" value={formData.permanentAddress} onChange={(e: any) => updateField('permanentAddress', e.target.value)} error={errors.permanentAddress} />
-          <FormInput id="permanentDistrict" label="Permanent District" value={formData.permanentDistrict} onChange={(e: any) => updateField('permanentDistrict', e.target.value)} />
           <FormInput id="presentAddress" label="Present Mailing Address" value={formData.presentAddress} onChange={(e: any) => updateField('presentAddress', e.target.value)} error={errors.presentAddress} />
-          <FormInput id="presentDistrict" label="Present District" value={formData.presentDistrict} onChange={(e: any) => updateField('presentDistrict', e.target.value)} />
         </div>
 
         <div className="space-y-4">
           <h3 className="font-semibold text-slate-900 border-b pb-2">Contact Details</h3>
-          <FormInput id="officePhone" label="Father's Tel (Office)" value={formData.officePhone} onChange={(e: any) => updateField('officePhone', e.target.value)} />
-          <FormInput id="residencePhone" label="Residence Phone" value={formData.residencePhone} onChange={(e: any) => updateField('residencePhone', e.target.value)} />
-          <FormInput id="whatsappNumber" label="WhatsApp Number (Important)" placeholder="0300-1234567" value={formData.whatsappNumber} onChange={(e: any) => updateField('whatsappNumber', e.target.value)} error={errors.whatsappNumber} />
-          <FormInput id="studentPhone" label="Student Personal Phone" value={formData.studentPhone} onChange={(e: any) => updateField('studentPhone', e.target.value)} />
+          <PhoneInput
+            id="officePhone"
+            label="Father's Tel (Office)"
+            value={formData.officePhone}
+            codeValue={formData.officePhoneCode}
+            onChangeNumber={(e: any) => updateField('officePhone', e.target.value.replace(/\D/g, ''))}
+            onChangeCode={(v: string) => updateField('officePhoneCode', v)}
+            error={errors.officePhone}
+          />
+          <PhoneInput
+            id="residencePhone"
+            label="Residence Phone"
+            value={formData.residencePhone}
+            codeValue={formData.residencePhoneCode}
+            onChangeNumber={(e: any) => updateField('residencePhone', e.target.value.replace(/\D/g, ''))}
+            onChangeCode={(v: string) => updateField('residencePhoneCode', v)}
+            error={errors.residencePhone}
+          />
+          <PhoneInput
+            id="whatsappNumber"
+            label="WhatsApp Number (Important)"
+            value={formData.whatsappNumber}
+            codeValue={formData.whatsappPhoneCode}
+            onChangeNumber={(e: any) => updateField('whatsappNumber', e.target.value.replace(/\D/g, ''))}
+            onChangeCode={(v: string) => updateField('whatsappPhoneCode', v)}
+            error={errors.whatsappNumber}
+          />
         </div>
       </div>
     </div>
@@ -486,17 +585,70 @@ export const AdmissionForm: React.FC<AdmissionFormProps> = ({ onBack }) => {
           </div>
         </div>
 
+        {/* Intermediate / H.S.S.C Section (Optional) */}
         <details className="group border border-slate-200 rounded-xl bg-white transition-all open:ring-2 open:ring-slate-100">
           <summary className="flex cursor-pointer items-center justify-between p-5 font-bold text-slate-900 hover:bg-slate-50 rounded-xl transition-colors select-none">
             <span className="flex items-center gap-2"><GraduationCap className="w-5 h-5 text-slate-500" /> Intermediate / H.S.S.C Details (Optional)</span>
             <span className="transition-transform group-open:rotate-180"><ArrowRight className="w-5 h-5 rotate-90 text-slate-400" /></span>
           </summary>
-          <div className="p-6 pt-2 text-slate-600 border-t border-slate-100 grid md:grid-cols-3 gap-6 animate-in slide-in-from-top-2">
-            <FormInput id="interRollNo" label="Roll No" value={formData.interRollNo} onChange={(e: any) => updateField('interRollNo', e.target.value)} />
-            <FormInput id="interYear" label="Passing Year" value={formData.interYear} onChange={(e: any) => updateField('interYear', e.target.value)} />
-            <FormInput id="interTotalMarks" label="Total Marks" value={formData.interTotalMarks} onChange={(e: any) => updateField('interTotalMarks', e.target.value)} />
-            <FormInput id="interMarksObtained" label="Obtained Marks" value={formData.interMarksObtained} onChange={(e: any) => updateField('interMarksObtained', e.target.value)} />
-            <div className="md:col-span-2"><FormInput id="interCollegeName" label="College Name" value={formData.interCollegeName} onChange={(e: any) => updateField('interCollegeName', e.target.value)} /></div>
+          <div className="p-6 pt-2 text-slate-600 border-t border-slate-100 space-y-8 animate-in slide-in-from-top-2">
+            <div>
+              <div className="grid md:grid-cols-3 gap-6">
+                <FormInput id="interRollNo" label="Roll No" value={formData.interRollNo} onChange={(e: any) => updateField('interRollNo', e.target.value)} />
+                <FormInput id="interYear" label="Passing Year" placeholder="2023" type="number" value={formData.interYear} onChange={(e: any) => updateField('interYear', e.target.value)} />
+                <FormInput id="interGrade" label="Grade / Division" placeholder="A" value={formData.interGrade} onChange={(e: any) => updateField('interGrade', e.target.value)} />
+                <FormInput id="interMarksObtained" label="Marks Obtained" type="number" value={formData.interMarksObtained} onChange={(e: any) => updateField('interMarksObtained', e.target.value)} />
+                <FormInput id="interTotalMarks" label="Total Marks" type="number" value={formData.interTotalMarks} onChange={(e: any) => updateField('interTotalMarks', e.target.value)} />
+                <FormInput id="interRegistrationNumber" label="Registration No" value={formData.interRegistrationNumber} onChange={(e: any) => updateField('interRegistrationNumber', e.target.value)} />
+                <div className="md:col-span-1"><FormInput id="interCollegeName" label="School / College Name" value={formData.interCollegeName} onChange={(e: any) => updateField('interCollegeName', e.target.value)} /></div>
+                <div className="md:col-span-2"><FormInput id="interBoardName" label="Board / University" value={formData.interBoardName} onChange={(e: any) => updateField('interBoardName', e.target.value)} /></div>
+              </div>
+            </div>
+
+            <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm">
+              <h3 className="font-bold text-lg text-slate-900 mb-4">Science Subjects (H.S.S.C)</h3>
+              <div className="overflow-x-auto rounded-lg border border-slate-200">
+                <table className="w-full text-sm text-left bg-white">
+                  <thead className="bg-slate-100 text-slate-700 font-bold uppercase text-xs">
+                    <tr>
+                      <th className="px-6 py-4">Subject</th>
+                      <th className="px-6 py-4">Total Marks</th>
+                      <th className="px-6 py-4">Marks Obtained</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {['English', 'Math', 'Physics', 'Chemistry'].map((sub) => {
+                      const key = `interSub${sub}` as keyof FormData;
+                      return (
+                        <tr key={sub}>
+                          <td className="px-6 py-4 font-medium">{sub}</td>
+                          <td className="px-6 py-4 text-slate-500">150</td>
+                          <td className="px-6 py-2">
+                            <div className="max-w-[120px]">
+                              <Input
+                                type="number"
+                                placeholder="0"
+                                min="0"
+                                max="150"
+                                value={formData[key] as number}
+                                onChange={(e: any) => updateField(key, e.target.value)}
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                    <tr className="bg-slate-50 font-bold text-slate-900">
+                      <td className="px-6 py-4">Grand Total</td>
+                      <td className="px-6 py-4">600</td>
+                      <td className="px-6 py-4 text-secondary text-lg">
+                        {(Number(formData.interSubEnglish) || 0) + (Number(formData.interSubMath) || 0) + (Number(formData.interSubPhysics) || 0) + (Number(formData.interSubChemistry) || 0)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </details>
       </div>

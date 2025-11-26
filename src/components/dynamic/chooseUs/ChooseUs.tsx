@@ -1,7 +1,7 @@
 import { CheckCircle } from 'lucide-react';
-import { STATS, HIGHLIGHTS } from './IntroData';
+import { STATS, HIGHLIGHTS } from './ChooseUsData';
 
-export const Intro = () => {
+export const ChooseUs = () => {
   return (
     <section id="about" className="py-20 bg-white">
       <div className="container mx-auto px-4 md:px-6">
@@ -23,7 +23,7 @@ export const Intro = () => {
             <p className="text-lg text-slate-600 mb-6 leading-relaxed">
               Established with a vision to produce highly skilled technicians, RPI has been a beacon of technical excellence in the region. We focus on practical learning that empowers students to innovate and lead.
             </p>
-            
+
             <div className="space-y-4 mb-8">
               {HIGHLIGHTS.map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
