@@ -8,6 +8,8 @@ export { PageLoader } from './common/PageLoader';
 export { PageSkeleton } from './common/Skeletons';
 export { Filters } from './common/filters/Filters';
 export { Search } from './common/search/Search';
+export { Chatbot } from './common/Chatbot';
+export { ScrollToTop } from './common/ScrollToTop';
 
 // Dynamic Components
 export { Hero } from './dynamic/hero/Hero';

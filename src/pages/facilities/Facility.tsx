@@ -24,8 +24,8 @@ export const Facility: React.FC = () => {
             />
 
             <FacilitiesOverview facilities={FACILITIES_DATA} stats={FACILITIES_STATS} />
-            <Testimonials />
             <Gallery />
+            <Testimonials />
             <CallToAction />
         </div>
     );

@@ -7,7 +7,6 @@ export const NAV_ITEMS: NavItem[] = [
     href: "/about",
     subItems: [
       { label: "Facilities", href: "/facilities" },
-      { label: "Campus Life", href: "/student-life" },
       { label: "Faculty", href: "/faculty" },
       { label: "Gallery", href: "/gallery" },
     ],
