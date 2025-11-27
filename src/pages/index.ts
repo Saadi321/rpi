@@ -6,6 +6,9 @@ export { Facility } from './facilities/Facility';
 export { Program } from './program/Program';
 export { AnnouncementsPage } from './announcements/Announcements';
 export { ContactUs } from './contactUs/ContactUs';
+export { Prospectus } from './prospectus/Prospectus';
+export { Faculty } from './faculty/Faculty';
+export { GalleryPage } from './gallery/GalleryPage';
+export { Blog } from './blog/Blog';
+export { BlogPost } from './blog/BlogPost';
 export { default as NotFound } from './NotFound';
-
-
