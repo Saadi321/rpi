@@ -16,10 +16,6 @@ export const Program: React.FC = () => {
                 subtitle="Technologists"
                 description="Rawalpindi Polytechnic Institute is a premier seat of learning, dedicated to producing skilled professionals who drive the nation's industrial growth."
                 badge="Since 1995"
-                primaryButtonText="Explore Programs"
-                secondaryButtonText="Contact Us"
-                primaryButtonLink="/programs"
-                secondaryButtonLink="/contact"
             />
 
             <Programs />
