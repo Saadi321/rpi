@@ -58,6 +58,7 @@ export const Navbar = () => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
+
           <a href="#" className="flex items-center gap-2 group">
             <div className="bg-primary p-2 rounded-lg group-hover:bg-secondary transition-colors">
               <GraduationCap className="w-6 h-6 text-white" />
@@ -115,7 +116,7 @@ export const Navbar = () => {
               </div>
             ))}
 
-            {/* 👤 USER ICON WITH ACCENT BORDER */}
+            {/* USER ICON WITH ACCENT BORDER */}
             <button
               onClick={() => navigate('/login')}
               className="p-2 rounded-full border-2 border-secondary hover:bg-slate-100 text-slate-600 hover:text-primary transition-colors"
@@ -124,7 +125,7 @@ export const Navbar = () => {
               <User className="w-5 h-5" />
             </button>
 
-            {/* 🔔 BELL ICON */}
+            {/* BELL ICON */}
             <button
               onClick={() => navigate('/announcements')}
               className="p-2 rounded-full hover:bg-slate-100 text-slate-600 hover:text-primary transition-colors relative group"
@@ -143,14 +144,27 @@ export const Navbar = () => {
             </Button>
           </div>
 
-          {/* MOBILE MENU BUTTON */}
-          <button
-            className="lg:hidden p-2 text-slate-600 hover:text-primary"
-            onClick={toggleMenu}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X /> : <Menu />}
-          </button>
+          {/* ⭐ MOBILE LEFT-SIDE BELL ICON ⭐ */}
+          <div className="flex lg:hidden items-center gap-3">
+            <button
+              onClick={() => navigate('/announcements')}
+              className="p-2 rounded-full hover:bg-slate-100 text-slate-600 hover:text-primary transition-colors relative"
+              aria-label="Announcements"
+            >
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+            </button>
+
+            {/* MOBILE MENU BUTTON */}
+            <button
+              className="p-2 text-slate-600 hover:text-primary"
+              onClick={toggleMenu}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X /> : <Menu />}
+            </button>
+          </div>
+
         </div>
       </div>
 
