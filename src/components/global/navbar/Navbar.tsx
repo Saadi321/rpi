@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, GraduationCap, ChevronDown, Bell } from 'lucide-react';
+import { Menu, X, GraduationCap, ChevronDown, Bell, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -68,6 +68,7 @@ export const Navbar = () => {
             </div>
           </a>
 
+          {/* DESKTOP MENU */}
           <div className="hidden lg:flex items-center gap-8">
             {NAV_ITEMS.map((item) => (
               <div
@@ -114,9 +115,18 @@ export const Navbar = () => {
               </div>
             ))}
 
-            {/* APPLY NOW BUTTON (updated with redirect) */}
+            {/* 👤 USER ICON WITH ACCENT BORDER */}
             <button
-              onClick={() => navigate('/admission')}
+              onClick={() => navigate('/login')}
+              className="p-2 rounded-full border-2 border-secondary hover:bg-slate-100 text-slate-600 hover:text-primary transition-colors"
+              aria-label="User Login"
+            >
+              <User className="w-5 h-5" />
+            </button>
+
+            {/* 🔔 BELL ICON */}
+            <button
+              onClick={() => navigate('/announcements')}
               className="p-2 rounded-full hover:bg-slate-100 text-slate-600 hover:text-primary transition-colors relative group"
               aria-label="Announcements"
             >
@@ -133,6 +143,7 @@ export const Navbar = () => {
             </Button>
           </div>
 
+          {/* MOBILE MENU BUTTON */}
           <button
             className="lg:hidden p-2 text-slate-600 hover:text-primary"
             onClick={toggleMenu}
@@ -143,6 +154,7 @@ export const Navbar = () => {
         </div>
       </div>
 
+      {/* MOBILE DROPDOWN */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -173,6 +185,7 @@ export const Navbar = () => {
                             }`}
                         />
                       </button>
+
                       {openDropdown === item.label && (
                         <div className="pl-4 space-y-2">
                           {item.subItems.map((subItem) => (
@@ -204,7 +217,18 @@ export const Navbar = () => {
                 </div>
               ))}
 
-              {/* MOBILE APPLY ONLINE BUTTON (updated with redirect) */}
+              {/* MOBILE LOGIN BUTTON */}
+              <Button
+                className="w-full"
+                onClick={() => {
+                  navigate('/login');
+                  setIsOpen(false);
+                }}
+              >
+                Login
+              </Button>
+
+              {/* MOBILE APPLY ONLINE BUTTON */}
               <Button
                 className="w-full mt-2"
                 onClick={() => {
