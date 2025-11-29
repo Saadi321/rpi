@@ -70,8 +70,8 @@ export const Prospectus = () => {
                   <Card
                     onClick={() => setSelectedProgram(program)}
                     className={`cursor-pointer transition-all duration-300 ${isSelected
-                        ? `${program.borderColor} border-2 shadow-lg ring-2 ring-secondary/20`
-                        : "border-slate-200 hover:border-secondary/50 hover:shadow-md"
+                      ? `${program.borderColor} border-2 shadow-lg ring-2 ring-secondary/20`
+                      : "border-slate-200 hover:border-secondary/50 hover:shadow-md"
                       }`}
                   >
                     <CardContent className="p-6">
