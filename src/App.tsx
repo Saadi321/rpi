@@ -75,6 +75,7 @@ const App = () => {
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/blog/author/:authorId" element={<AuthorProfile />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
