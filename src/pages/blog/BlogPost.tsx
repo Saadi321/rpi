@@ -1,16 +1,21 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, User, ArrowLeft, Tag, Share2, Facebook, Twitter, Linkedin, MessageCircle, ArrowRight } from 'lucide-react';
-import { CallToAction, Testimonials, DynamicHero } from '@/components';
+import { Calendar, Clock, ArrowLeft, Tag, Share2, Facebook, Twitter, Linkedin, MessageCircle, ArrowRight, Bookmark, BookmarkCheck, Copy } from 'lucide-react';
+import { CallToAction, Testimonials } from '@/components';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { BLOG_POSTS, BLOG_CATEGORIES } from './BlogData';
+import { BLOG_POSTS, BLOG_CATEGORIES, getAuthorById } from './BlogData';
 import { toast } from 'sonner';
+import { useBookmarks } from '@/hooks/useBookmarks';
+import { useReadingProgress } from '@/hooks/useReadingProgress';
+import { ReadingProgressBar, NewsletterSubscription, CommentsSection } from '@/components/blog';
 
 export const BlogPost = () => {
   const { slug } = useParams();
   const post = BLOG_POSTS.find(p => p.slug === slug);
+  const { isBookmarked, toggleBookmark } = useBookmarks();
+  const readingProgress = useReadingProgress();
 
   if (!post) {
     return (
@@ -24,6 +29,9 @@ export const BlogPost = () => {
       </div>
     );
   }
+
+  const author = getAuthorById(post.authorId);
+  const bookmarked = isBookmarked(post.id);
 
   // Get related posts from same category
   const relatedPosts = BLOG_POSTS.filter(
@@ -51,8 +59,20 @@ export const BlogPost = () => {
     toast.success('Link copied to clipboard!');
   };
 
+  const handleBookmark = () => {
+    toggleBookmark(post.id);
+    if (bookmarked) {
+      toast.success('Removed from bookmarks');
+    } else {
+      toast.success('Saved to bookmarks!');
+    }
+  };
+
   return (
     <main className="min-h-screen bg-white">
+      {/* Reading Progress Bar */}
+      <ReadingProgressBar progress={readingProgress} />
+
       {/* Hero Section */}
       <section className="relative py-20 bg-slate-900 overflow-hidden">
         <div
@@ -66,11 +86,30 @@ export const BlogPost = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent" />
 
         <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <Link to="/blog">
-            <Button variant="ghost" className="text-white hover:text-secondary hover:bg-white/10 mb-8 gap-2">
-              <ArrowLeft className="w-4 h-4" /> Back to Blog
+          <div className="flex items-center justify-between mb-8">
+            <Link to="/blog">
+              <Button variant="ghost" className="text-white hover:text-secondary hover:bg-white/10 gap-2">
+                <ArrowLeft className="w-4 h-4" /> Back to Blog
+              </Button>
+            </Link>
+            
+            {/* Bookmark Button */}
+            <Button
+              variant="ghost"
+              onClick={handleBookmark}
+              className={`gap-2 ${bookmarked ? 'text-secondary' : 'text-white'} hover:text-secondary hover:bg-white/10`}
+            >
+              {bookmarked ? (
+                <>
+                  <BookmarkCheck className="w-4 h-4 fill-current" /> Saved
+                </>
+              ) : (
+                <>
+                  <Bookmark className="w-4 h-4" /> Save
+                </>
+              )}
             </Button>
-          </Link>
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -87,14 +126,17 @@ export const BlogPost = () => {
             </h1>
 
             <div className="flex flex-wrap items-center gap-6 text-slate-300">
-              <div className="flex items-center gap-2">
+              <Link 
+                to={`/blog/author/${post.authorId}`}
+                className="flex items-center gap-2 hover:text-secondary transition-colors"
+              >
                 <img
                   src={post.authorAvatar}
                   alt={post.author}
                   className="w-10 h-10 rounded-full border-2 border-white/20"
                 />
                 <span className="font-medium">{post.author}</span>
-              </div>
+              </Link>
               <span className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 {new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
@@ -161,14 +203,14 @@ export const BlogPost = () => {
                     <Share2 className="w-5 h-5 text-slate-600" />
                     <span className="font-bold text-slate-900">Share this article:</span>
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex flex-wrap gap-2">
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => handleShare('facebook')}
                       className="gap-2 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200"
                     >
-                      <Facebook className="w-4 h-4" /> Facebook
+                      <Facebook className="w-4 h-4" />
                     </Button>
                     <Button
                       size="sm"
@@ -176,7 +218,7 @@ export const BlogPost = () => {
                       onClick={() => handleShare('twitter')}
                       className="gap-2 hover:bg-sky-50 hover:text-sky-600 hover:border-sky-200"
                     >
-                      <Twitter className="w-4 h-4" /> Twitter
+                      <Twitter className="w-4 h-4" />
                     </Button>
                     <Button
                       size="sm"
@@ -184,7 +226,7 @@ export const BlogPost = () => {
                       onClick={() => handleShare('linkedin')}
                       className="gap-2 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200"
                     >
-                      <Linkedin className="w-4 h-4" /> LinkedIn
+                      <Linkedin className="w-4 h-4" />
                     </Button>
                     <Button
                       size="sm"
@@ -192,33 +234,82 @@ export const BlogPost = () => {
                       onClick={() => handleShare('whatsapp')}
                       className="gap-2 hover:bg-green-50 hover:text-green-600 hover:border-green-200"
                     >
-                      <MessageCircle className="w-4 h-4" /> WhatsApp
+                      <MessageCircle className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={copyLink}
+                      className="gap-2 hover:bg-slate-100"
+                    >
+                      <Copy className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
               </div>
 
               {/* Author Bio */}
-              <div className="mb-12 p-8 bg-slate-50 rounded-2xl border border-slate-200">
-                <div className="flex items-start gap-4">
-                  <img
-                    src={post.authorAvatar}
-                    alt={post.author}
-                    className="w-16 h-16 rounded-full"
-                  />
-                  <div>
-                    <h3 className="font-bold text-slate-900 text-lg mb-2">About the Author</h3>
-                    <p className="text-slate-600 text-sm mb-2">{post.author}</p>
-                    <p className="text-slate-500 text-sm">
-                      Contributing author at Rawalpindi Polytechnic Institute
-                    </p>
+              <Link to={`/blog/author/${post.authorId}`}>
+                <div className="mb-12 p-8 bg-slate-50 rounded-2xl border border-slate-200 hover:border-secondary/50 hover:shadow-lg transition-all cursor-pointer group">
+                  <div className="flex items-start gap-4">
+                    <img
+                      src={post.authorAvatar}
+                      alt={post.author}
+                      className="w-16 h-16 rounded-full group-hover:ring-4 ring-secondary/20 transition-all"
+                    />
+                    <div>
+                      <h3 className="font-bold text-slate-900 text-lg mb-1 group-hover:text-secondary transition-colors">
+                        About the Author
+                      </h3>
+                      <p className="text-secondary font-medium text-sm mb-2">{post.author}</p>
+                      <p className="text-slate-500 text-sm">
+                        {author?.bio?.substring(0, 150)}...
+                      </p>
+                      <span className="inline-flex items-center gap-1 text-secondary text-sm font-medium mt-2 group-hover:gap-2 transition-all">
+                        View Profile <ArrowRight className="w-3 h-3" />
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
+
+              {/* Comments Section */}
+              <CommentsSection postId={post.id} />
             </div>
 
             {/* Sidebar */}
             <div className="lg:col-span-4 space-y-8">
+              {/* Newsletter Subscription */}
+              <NewsletterSubscription />
+
+              {/* Bookmark Card */}
+              <Card className="border-slate-200 shadow-sm">
+                <CardContent className="p-6 text-center">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 ${bookmarked ? 'bg-secondary/10' : 'bg-slate-100'}`}>
+                    {bookmarked ? (
+                      <BookmarkCheck className="w-6 h-6 text-secondary" />
+                    ) : (
+                      <Bookmark className="w-6 h-6 text-slate-500" />
+                    )}
+                  </div>
+                  <h3 className="font-bold text-slate-900 mb-2">
+                    {bookmarked ? 'Saved!' : 'Save for Later'}
+                  </h3>
+                  <p className="text-sm text-slate-600 mb-4">
+                    {bookmarked 
+                      ? 'This article is in your bookmarks.' 
+                      : 'Bookmark this article to read later.'}
+                  </p>
+                  <Button
+                    onClick={handleBookmark}
+                    variant={bookmarked ? 'outline' : 'default'}
+                    className={`w-full ${!bookmarked ? 'bg-secondary hover:bg-secondary/90' : ''}`}
+                  >
+                    {bookmarked ? 'Remove Bookmark' : 'Add Bookmark'}
+                  </Button>
+                </CardContent>
+              </Card>
+
               {/* Recent Posts */}
               <Card className="border-slate-200 shadow-sm">
                 <CardContent className="p-6">
@@ -285,8 +376,8 @@ export const BlogPost = () => {
                   <Share2 className="w-8 h-8 text-secondary mx-auto mb-3" />
                   <h3 className="font-bold text-slate-900 mb-2">Love this article?</h3>
                   <p className="text-sm text-slate-600 mb-4">Share it with your friends and colleagues!</p>
-                  <Button onClick={copyLink} variant="outline" className="w-full">
-                    Copy Link
+                  <Button onClick={copyLink} variant="outline" className="w-full gap-2">
+                    <Copy className="w-4 h-4" /> Copy Link
                   </Button>
                 </CardContent>
               </Card>
