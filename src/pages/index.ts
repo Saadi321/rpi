@@ -11,4 +11,6 @@ export { Faculty } from './faculty/Faculty';
 export { GalleryPage } from './gallery/GalleryPage';
 export { Blog } from './blog/Blog';
 export { BlogPost } from './blog/BlogPost';
+export { AuthorProfile } from './blog/AuthorProfile';
+export { Login } from './auth/Login';
 export { default as NotFound } from './NotFound';
